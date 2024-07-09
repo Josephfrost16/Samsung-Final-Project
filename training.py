@@ -2,6 +2,7 @@ import random
 import json
 import pickle
 import numpy as np
+import matplotlib.pyplot as plt
 
 import nltk
 from nltk.stem import WordNetLemmatizer #Para pasar las palabras a su forma raíz
@@ -73,5 +74,13 @@ sgd = optimizers.SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True
 model.compile(loss='categorical_crossentropy', optimizer = sgd, metrics = ['accuracy'])
 
 #Entrenamos el modelo y lo guardamos
-model.fit(train_x,train_y, epochs=120, batch_size=5, verbose=1)
+history = model.fit(train_x,train_y, epochs=120, batch_size=5, verbose=1)
 models.save_model(model, 'chatbot_model.h5')
+
+# Graficar la función de coste
+plt.plot(history.history['loss'])
+plt.title('Función de coste durante el entrenamiento')
+plt.xlabel('Época')
+plt.ylabel('Pérdida')
+plt.savefig('Grafico_coste.png') 
+plt.close()  
